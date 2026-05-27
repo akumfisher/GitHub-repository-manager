@@ -1,16 +1,18 @@
 from GitHub import *
+from colorama import Fore, Back, Style, init
+
+init()
 
 def menu():
     while True:
-        print("\n=== GitHub Repo Manager ===")
-        print("1. Add Repo")
-        print("2. List Repos")
-        print("3. Clone Repo")
-        print("4. Update Repo")
-        print("5. Delete Repo")
-        print("6. Exit")
-
-        choice = input("Choose: ")
+        print(Fore.LIGHTBLUE_EX + "\n=== GitHub Repo Manager ===")
+        print(Fore.MAGENTA + "[1] Add Repo")
+        print("[2] List Repos")
+        print("[3] Clone Repo")
+        print("[4] Update Repo")
+        print("[5] Delete Repo")
+        print("[6] Exit" )
+        choice = input(Fore.BLUE + "Choose: " + Style.RESET_ALL)
 
         if choice == "1":
             add_repo()
@@ -25,6 +27,6 @@ def menu():
         elif choice == "6":
             break
         else:
-            print("Invalid choice.")
+            print(Fore.RED + "Invalid choice.")
 
 menu()

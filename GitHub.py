@@ -1,5 +1,6 @@
 import json
 import os
+from colorama import Fore, Style
 
 FILE = "repos.json"
 
@@ -18,10 +19,10 @@ def save(data):
 
 def add_repo():
     repos = load()
-    url = input("Repo URL: ")
+    url = input(Fore.BLUE + "Repository URL: ")
     repos.append(url)
     save(repos)
-    print("Saved.")
+    print(Fore.GREEN + "Repository has been saved." + Style.RESET_ALL)
 
 
 def list_repos():
@@ -33,12 +34,12 @@ def list_repos():
 def clone_repo():
     repos = load()
     list_repos()
-    n = int(input("Repo number: "))
+    n = int(input(Fore.BLUE + "Repository number: "))
     os.system(f"git clone {repos[n-1]}")
 
 
 def update_repo():
-    folder = input("Folder name: ")
+    folder = input("Folder name: " + Style.RESET_ALL)
     os.system(f"cd {folder} && git pull")
     
     
@@ -48,16 +49,16 @@ def delete_repo():
 
     while True:
         try:
-            n = int(input("Repo number: "))
+            n = int(input(Fore.BLUE + "Repository number: "))
             repo_range = range(1, len(repos)+1)
 
             if n in repo_range:
                 repos.pop(n-1)
                 save(repos)
-                print("Repo deleted.")
+                print(Fore.GREEN + "Repositoty successfully deleted.")
                 break
             else:
-                print("Invalid option")
+                print(Fore.YELLOW + "Please enter a valid repository option!")
 
         except:
-            print("Enter a number.")
+            print(Fore.YELLOW + "Enter a number please!")
