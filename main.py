@@ -1,4 +1,4 @@
-from GitHub import *
+from github import *
 from colorama import Fore, Back, Style, init
 
 init()
