@@ -6,6 +6,15 @@ from urllib.parse import urlparse
 
 FILE = "repos.json"
 
+def success(message):
+    print(Fore.GREEN + message + Style.RESET_ALL)
+
+def error(message):
+    print(Fore.RED + message + Style.RESET_ALL)
+
+def warning(message):
+    print(Fore.YELLOW + message + Style.RESET_ALL)
+
 
 def load():
     
@@ -15,8 +24,7 @@ def load():
     with open(FILE, "r") as f:
         return json.load(f)
         
-#not_empty = False
-
+        
 def parser(url):
     
     parsed_url = urlparse(url)
@@ -25,7 +33,7 @@ def parser(url):
         return True
     
     else:
-        print(Fore.YELLOW + "[!] Github URLs only" + Style.RESET_ALL)
+        warnind("[!] Github URLs only")
         return False
         
         
@@ -38,7 +46,7 @@ def url_checker(url):
     
     headers = {"User-Agent": "Mozilla/5.0"}
     
-    if parser(urla):
+    if parser(url):
         try:
             response = requests.get(
                 url,
@@ -67,14 +75,13 @@ def add_repo():
     if url not in repos and url_checker(url):
         repos.append(url)
         save(repos)
-        print(Fore.GREEN + "[✓] Repository has been saved." + Style.RESET_ALL)
+        success("[✓] Repository has been saved.")
     
     elif url in repos:
-        print(Fore.YELLOW + "[!]Repository already exists")
+        warning("[!]Repository already exists")
  
     else:
-        print(Fore.RED + "Invalid repository link" + Style.RESET_ALL)
-      
+        error("Invalid repository link")
 
 
 def list_repos():
@@ -85,7 +92,7 @@ def list_repos():
             print(f"{i}. {repo}")
             
     else:
-        print(Fore.YELLOW + "[!]No repository was found!")
+        warning("[!]No repository was found!")
 
 
 def clone_repo():
@@ -97,7 +104,8 @@ def clone_repo():
         n = int(input(Fore.BLUE + "Repository number: "))
         os.system(f"git clone {repos[n-1]}")
     else:
-        print(Fore.YELLOW + "[!]No repository was found!" + Style.RESET_ALL)
+        warning("[!]No repository was found!")
+
 
 
 def update_repo():
@@ -107,7 +115,7 @@ def update_repo():
         os.system(f"cd {folder} && git pull")
         
     else:
-        print(Fore.YELLOW + "[!]No repository was found!" + Style.RESET_ALL)
+        warning("[!]No repository was found!")
     
     
 def delete_repo():
@@ -129,11 +137,11 @@ def delete_repo():
             if n in repo_range:
                 repos.pop(n-1)
                 save(repos)
-                print(Fore.GREEN + "[✓] Repository successfully deleted.")
+                success("[✓] Repository successfully deleted.")
                 break
           
             else:
-                print(Fore.YELLOW + "[!] Please enter a valid repository option!")
+                warning("[!] Please enter a valid repository option!")
 
         except ValueError:
-            print(Fore.YELLOW + "[!] Enter a number please!" + Style.RESET_ALL)
+            warning("[!] Enter a number please!")
