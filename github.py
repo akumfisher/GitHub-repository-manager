@@ -2,7 +2,7 @@ import json
 import os
 from colorama import Fore, Style
 import requests
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urlsplit
 
 FILE = "repos.json"
 
@@ -33,9 +33,15 @@ def parser(url):
         return True
     
     else:
-        warnind("[!] Github URLs only")
+        warning("[!] Github URLs only")
         return False
         
+
+def name_split(repo):
+    split_url = urlsplit(repo)
+    path_segment = split_url.path.strip('/').split('/')
+    return path_segment[-1]
+    
         
 def non_empty_repo():
     
@@ -70,7 +76,7 @@ def save(data):
 def add_repo():
     
     repos = load()
-    url = input(Fore.BLUE + "Repository URL: ")
+    url = input(Fore.BLUE + "Repository URL: " + Style.RESET_ALL)
     
     if url not in repos and url_checker(url):
         repos.append(url)
@@ -88,8 +94,10 @@ def list_repos():
     
     if non_empty_repo():
         repos = load()
+        
         for i, repo in enumerate(repos, 1):
-            print(f"{i}. {repo}")
+            repo_name = name_split(repo)
+            print(f"{i}. {repo_name}")
             
     else:
         warning("[!]No repository was found!")
@@ -101,7 +109,7 @@ def clone_repo():
    
     if non_empty_repo():
         list_repos()
-        n = int(input(Fore.BLUE + "Repository number: "))
+        n = int(input(Fore.BLUE + "Repository number: " + Style.RESET_ALL))
         os.system(f"git clone {repos[n-1]}")
     else:
         warning("[!]No repository was found!")
@@ -130,7 +138,7 @@ def delete_repo():
     
     while not_empty:
         try:
-            n = int(input(Fore.BLUE + "Repository number: "))
+            n = int(input(Fore.BLUE + "Repository number: " + Style.RESET_ALL))
             
             repo_range = range(1, len(repos)+1)
 
